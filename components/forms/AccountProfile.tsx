@@ -104,7 +104,7 @@ const AccountProfile = ({user, btnTitle}: Props) => {
             course: values.course,
             semester: values.semester,
             path: pathname
-        })
+        });
 
         if(pathname === '/profile/edit') {
             router.back();

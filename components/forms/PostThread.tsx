@@ -20,6 +20,7 @@ import Image from "next/image";
 
 import { fetchUser, updateUser } from "@/lib/actions/user.actions";
 import { createThread } from "@/lib/actions/thread.actions";
+import { useOrganization } from "@clerk/nextjs";
 
 
 
@@ -31,6 +32,7 @@ function PostThread({userId} : Props) {
 
     const router = useRouter();
     const pathname = usePathname();
+    const {organization} = useOrganization();
  
     const form = useForm({
 
@@ -43,12 +45,14 @@ function PostThread({userId} : Props) {
 
 
     const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+
         await createThread({
             text: values.thread,
             author: userId,
-            communityId: null,
-            path: pathname
-        });
+            communityId: organization ? organization.id : null,
+            path: pathname,
+          });
+        
 
         router.push("/");
     }
